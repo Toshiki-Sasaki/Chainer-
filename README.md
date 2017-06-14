@@ -47,3 +47,8 @@ $ import chainer.links as L
 $ # 実数->np.float32, 整数->np.int32
 $ x1 = Variable(np.array([1]).astype(np.float32))
 ```
+
+
+
+### Optimizer の種類
+http://docs.chainer.org/en/stable/reference/optimizers.html
