@@ -9,8 +9,9 @@ from chainer import Link, Chain, ChainList
 import chainer.functions as F
 import chainer.links as L
 import sys
+import math
 
-sys.argv
+argvs = sys.argv
 
 # コーパスを読み込み、単語にidをつける
 vocab = {}
@@ -27,6 +28,7 @@ def load_data(filename):
 
 train_data = load_data('ptb.train.txt')
 eos_id = vocab['<eos>']
+max_id = len(vocab)
 
 # モデルの定義
 class MyRNN(chainer.Chain):
@@ -57,7 +59,7 @@ demb = 100
 def cal_ps(model, s):
     h = Variable(np.zeros((1,demb), dtype=np.float32))
     sum = 0.0
-    for i in ranfe(1, len(s)):
+    for i in range(1, len(s)):
         w1, w2 = s[i-1], s[i]
         x_k = model.embed(Variable(np.array([w1], dtype=np.int32)))
         h = F.tanh(x_k + model.H(h))
@@ -89,3 +91,16 @@ for pos in range(len(test_data)):
             unk_word = 0
         s = []
 print(math.pow(2, sum/wnum))
+
+'''
+$ python eval_rnn.py myrnn-0.model
+207.46712147826622
+$ python eval_rnn.py myrnn-1.model
+174.7634578525788
+$ python eval_rnn.py myrnn-2.model
+161.59308565812177
+$ python eval_rnn.py myrnn-3.model
+155.90756456218296
+$ python eval_rnn.py myrnn-4.model
+155.1668962163235
+'''
